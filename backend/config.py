@@ -55,6 +55,12 @@ class Settings(BaseSettings):
     feature_type: str = "Feature"
     iteration_field: str = "System.IterationPath"
 
+    # Optional: Personal Access Token for Azure DevOps. If set, the server
+    # will use this PAT for REST calls instead of interactive/device auth.
+    # Store a scoped PAT here when interactive/device flows are blocked by
+    # Conditional Access or when you want a simple shared service account.
+    ado_pat: str = ""
+
     completed_states: str = "Closed,Done,Completed,Resolved,Ready to Release,Released"
     excluded_states: str = "Removed,Cut"
     excluded_types: str = "Bug"

@@ -4,6 +4,7 @@ from __future__ import annotations
 import time
 
 import httpx
+import base64
 from azure.identity import (
     DeviceCodeCredential,
     InteractiveBrowserCredential,
@@ -42,16 +43,23 @@ class ADOClient:
         self.settings = settings
         self._access_token = access_token
         self._credential = None
+        self._pat: str | None = None
         if access_token is None:
             cache_opts = TokenCachePersistenceOptions(name="quarter_delivery_tracker")
-            if settings.auth_mode == "devicecode":
-                self._credential = DeviceCodeCredential(
-                    cache_persistence_options=cache_opts,
-                )
+            # If a Personal Access Token (PAT) is provided in settings use
+            # that instead of interactive/device credentials. This is useful
+            # when Conditional Access blocks interactive/device flows.
+            if getattr(settings, "ado_pat", ""):
+                self._pat = settings.ado_pat
             else:
-                self._credential = InteractiveBrowserCredential(
-                    cache_persistence_options=cache_opts,
-                )
+                if settings.auth_mode == "devicecode":
+                    self._credential = DeviceCodeCredential(
+                        cache_persistence_options=cache_opts,
+                    )
+                else:
+                    self._credential = InteractiveBrowserCredential(
+                        cache_persistence_options=cache_opts,
+                    )
         self._token: str | None = None
         self._expires_on: float = 0.0
         self._org_url = f"https://dev.azure.com/{settings.ado_org}"
@@ -78,7 +86,7 @@ class ADOClient:
         Only meaningful in single-user interactive mode; a no-op when a per-user
         access token was supplied.
         """
-        if self._access_token is None:
+        if self._access_token is None and not self._pat:
             self._get_token()
 
     def _headers(self) -> dict[str, str]:
@@ -133,6 +141,33 @@ class ADOClient:
             {"name": f.get("name"), "referenceName": f.get("referenceName")}
             for f in data.get("value", [])
         ]
+
+    def _headers(self) -> dict[str, str]:
+        """Return appropriate headers for the current auth method.
+
+        - If a PAT is configured, use HTTP Basic with the PAT as the password
+          (username left empty), as supported by Azure DevOps REST.
+        - If an explicit access token was supplied, use Bearer.
+        - Otherwise use the azure-identity credential to acquire a token.
+        """
+        if self._pat:
+            basic = base64.b64encode((":" + self._pat).encode()).decode()
+            return {
+                "Authorization": f"Basic {basic}",
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            }
+        if self._access_token is not None:
+            return {
+                "Authorization": f"Bearer {self._access_token}",
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            }
+        return {
+            "Authorization": f"Bearer {self._get_token()}",
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+        }
 
     # -- feature drill-down ---------------------------------------------
     def get_feature_ids_for_team(

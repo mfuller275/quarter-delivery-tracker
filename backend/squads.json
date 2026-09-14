@@ -4,7 +4,8 @@
   "ignoreTeams": ["Viz_Moonshot"],
   "overrides": {
     "Nucleons": { "velocityPerMonth": 15 }	,
-    "Aikya": { "velocityPerMonth": 25 }
+    "Aikya": { "velocityPerMonth": 25 },
+	  "Chargers": { "velocityPerMonth": 85 }
   },
   "portfolios": [
     {
@@ -20,7 +21,7 @@
             { "name": "Aikya", "lead": "Sridhar Bathina" },
             { "name": "Chargers", "lead": "Richard Hanley" },
             { "name": "Seagulls", "lead": "Sathish Mailaram" },
-            { "name": "Technocrats", "lead": "MAdhulatha Vayyala" }
+            { "name": "Technocrats", "lead": "Madhulatha Vayyala" }
           ]
         },
         { "name": "Data Access", "lead": "TBD", "scrumTeams": ["Moonshot"] },
