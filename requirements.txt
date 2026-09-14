@@ -1,0 +1,8 @@
+fastapi>=0.110
+uvicorn[standard]>=0.27
+azure-identity>=1.15
+httpx>=0.27
+python-dotenv>=1.0
+pydantic-settings>=2.1
+msal>=1.28
+itsdangerous>=2.1

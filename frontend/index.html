@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quarter Delivery Tracker</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div>
+      <h1>Quarter Delivery Tracker</h1>
+      
+    </div>
+    <div class="header-controls">
+      <label class="qsel">
+        <span class="muted small">Quarter</span>
+        <select id="quarter-select"></select>
+      </label>
+      <label class="chk" title="Hide features and PBIs whose state is Ready to Release or Removed">
+        <input type="checkbox" id="hide-rtr" />
+        <span class="muted small">Hide Ready to Release / Removed</span>
+      </label>
+      <button id="refresh" class="btn">Sign in &amp; load</button>
+      <span id="auth-box" class="auth-box hidden"></span>
+    </div>
+  </header>
+
+  <nav id="breadcrumb" class="breadcrumb hidden"></nav>
+
+  <section id="totals" class="totals-strip hidden"></section>
+
+  <p id="conf-note" class="conf-note muted small hidden">
+    <strong>How confidence works:</strong> for each squad we project remaining
+    capacity = velocity × months left in the quarter, then compare it to the
+    remaining committed effort. Confidence = min(capacity ÷ remaining effort,
+    100%). <span class="c-green">≥80% on track</span> ·
+    <span class="c-yellow">50–79% at risk</span> ·
+    <span class="c-red">&lt;50% off track</span>.
+  </p>
+
+  <div id="status" class="status"></div>
+
+  <section id="view" class="view"></section>
+
+  <template id="tile">
+    <article class="tile">
+      <div class="tile-head">
+        <div class="tile-title-wrap">
+          <h2 class="tile-name"></h2>
+          <span class="tile-lead muted small"></span>
+        </div>
+        <span class="badge"></span>
+      </div>
+
+      <div class="tile-primary">
+        <div class="metric-big">
+          <span class="pct"></span>
+          <span class="muted small">complete</span>
+        </div>
+        <div class="metric-big">
+          <span class="conf"></span>
+          <span class="muted small">confidence</span>
+        </div>
+      </div>
+
+      <div class="progress">
+        <div class="progress-fill"></div>
+      </div>
+
+      <div class="sub-alert hidden"></div>
+
+      <div class="capacity">
+        <div class="cap-row muted small">
+          <span class="effort-label"></span>
+          <span class="cap-label"></span>
+        </div>
+        <div class="cap-track">
+          <div class="cap-fill"></div>
+          <div class="cap-marker" title="Committed effort"></div>
+        </div>
+        <div class="vel muted small"></div>
+      </div>
+
+      <div class="tile-actions">
+        <button class="link drill"></button>
+        <button class="link feats">Features</button>
+      </div>
+    </article>
+  </template>
+
+  <script src="/app.js"></script>
+</body>
+</html>

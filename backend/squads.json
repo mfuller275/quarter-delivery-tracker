@@ -1,0 +1,97 @@
+{
+  "_comment": "Rollup mapping: portfolio squad (PT) -> product squad -> scrum teams. Features may be assigned in Azure DevOps either to a scrum team OR directly to a product squad name (e.g. InConcertOUX); both roll up. Scrum teams can be listed as either a plain string or an object like {\"name\": \"Nucleons\", \"lead\": \"Alyssa\"}. Scrum teams are matched to ADO Custom.ScrumTeam values by fuzzy match (match_cutoff in .env); product squad names match exactly. A product squad's velocity comes from its scrum teams (plus, when features are assigned to the product directly and there are no scrum teams yet, that product's own recent throughput). List ADO teams to never match under 'ignoreTeams'. Visualization portfolio is intentionally excluded.",
+  "velocityBasis": "storyPoints",
+  "ignoreTeams": ["Viz_Moonshot"],
+  "overrides": {
+    "Nucleons": { "velocityPerMonth": 15 }	,
+    "Aikya": { "velocityPerMonth": 25 }
+  },
+  "portfolios": [
+    {
+      "name": "Core",
+      "lead": "Matt Fuller",
+      "productSquads": [
+        {
+          "name": "Core",
+          "lead": "TBD",
+          "scrumTeams": [
+            { "name": "Nucleons", "lead": "Vasudha Pathi" },
+            { "name": "Vanquishers", "lead": "Vakula Vangapalli" },
+            { "name": "Aikya", "lead": "Sridhar Bathina" },
+            { "name": "Chargers", "lead": "Richard Hanley" },
+            { "name": "Seagulls", "lead": "Sathish Mailaram" },
+            { "name": "Technocrats", "lead": "MAdhulatha Vayyala" }
+          ]
+        },
+        { "name": "Data Access", "lead": "TBD", "scrumTeams": ["Moonshot"] },
+        {
+          "name": "UX",
+          "lead": "Jack Cockerell",
+          "scrumTeams": [
+            { "name": "Spitfires", "lead": "Ben Randall" },
+            { "name": "Shire", "lead": "Yakun Li" },
+            { "name": "Acadia", "lead": "Gokul Aketi" },
+            { "name": "Yosemite", "lead": "Scott Shaw" },
+            { "name": "Glacier", "lead": "TBD" },
+            { "name": "Arches", "lead": "Girighar Pothamsetty" },
+            { "name": "Everglades", "lead": "Esha Garg" },
+            { "name": "404s", "lead": "Nagababu Aeddula" }
+          ]
+        },
+        { "name": "Project Collaboration", "lead": "Giri Jonnadula", "scrumTeams": [ { "name":"Adroits", "lead": "TBD" } ] },
+        { "name": "Config Assistant", "lead": "Leela Siriki", "scrumTeams": [] },
+        { "name": "Visual Integration", "lead": "TBD", "scrumTeams": [ { "name":"Spinners", "lead": "TBD" }, { "name":"Navigators", "lead": "TBD" } ] }
+      ]
+    },
+    {
+      "name": "Integration & Connectivity",
+      "lead": "Ravi Gade",
+      "productSquads": [
+        {
+          "name": "PAB",
+          "lead": "Kirthi",
+          "scrumTeams": [ 
+           { "name": "Meteors", "lead": "TBD" },
+           { "name": "MultiNexus", "lead": "TBD" }
+          ]
+        },
+        {
+          "name": "Subscribe",
+          "lead": "Sreedhar",
+          "scrumTeams": [
+             
+            { "name": "Mavens", "lead": "TBD" },
+            { "name": "Merakians", "lead": "TBD" }
+          ]
+        },
+        {
+          "name": "OnBoarding",
+          "lead": "TBA",
+          "scrumTeams": [ { "name": "Mystics", "lead": "TBD" }, { "name": "Merlins", "lead": "TBD" }, { "name": "Multiverse", "lead": "TBD" }, { "name": "Marvels", "lead": "TBD" }, { "name": "Marshals", "lead": "TBD" }, { "name": "Masters", "lead": "TBD" } ]
+        },
+        {
+          "name": "Connectivity Services",
+          "lead": "Sharath Vollala",
+          "scrumTeams": [ { "name": "Xchange", "lead": "TBD" }, { "name": "Orbiters", "lead": "Luke Newman" }]
+        }
+      ]
+    },
+    {
+      "name": "DTO",
+      "lead": "Raghav Aluru",
+      "productSquads": [
+        { "name": "DTO Core", "lead": "Sumedh Hiwarale/Raghav Aluru", "scrumTeams": [{ "name":"Swans", "lead": "TBD" }] },
+        {
+          "name": "Data Capture",
+          "lead": "Anusha Mandapati",
+          "scrumTeams": [ { "name": "Vedangs", "lead": "TBD" }, { "name": "Hobbits", "lead": "TBD" } ]
+        },
+        {
+          "name": "3D",
+          "lead": "Sampath",
+          "scrumTeams": [ { "name": "TITANs", "lead": "TBD" }, { "name": "Pioneers", "lead": "TBD" }, { "name": "Achilles", "lead": "TBD" } ]
+        }
+      ]
+    }
+  ]
+}
