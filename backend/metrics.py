@@ -86,7 +86,11 @@ def compute_summary(raw_items: list[dict], settings: Settings) -> dict:
 
     items = [normalize_item(wi, settings, today) for wi in raw_items]
     excluded = settings.excluded_state_set
-    items = [i for i in items if i["state"] not in excluded]
+    excluded_types = settings.excluded_type_set
+    items = [
+        i for i in items
+        if i["state"] not in excluded and i["type"] not in excluded_types
+    ]
 
     teams: dict[str, list[dict]] = {}
     for item in items:
@@ -274,8 +278,9 @@ def child_records(feat: dict, children_by_id: dict[int, dict], settings: Setting
         if not ch:
             continue
         f = ch.get("fields", {})
+        item_type = f.get("System.WorkItemType", "")
         state = f.get("System.State", "")
-        if state in excluded:
+        if state in excluded or item_type in settings.excluded_type_set:
             continue
         team = f.get(settings.team_field) or ""
         if isinstance(team, dict):
@@ -320,6 +325,7 @@ def feature_metrics(feat: dict, children_by_id: dict[int, dict], settings: Setti
         for c in _child_ids(feat)
         if c in children_by_id
         and children_by_id[c].get("fields", {}).get("System.State") not in excluded_states
+        and children_by_id[c].get("fields", {}).get("System.WorkItemType") not in settings.excluded_type_set
     ]
     total = len(children)
     done = sum(1 for c in children if c.get("fields", {}).get("System.State") in completed_states)

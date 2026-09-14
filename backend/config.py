@@ -57,6 +57,7 @@ class Settings(BaseSettings):
 
     completed_states: str = "Closed,Done,Completed,Resolved,Ready to Release,Released"
     excluded_states: str = "Removed,Cut"
+    excluded_types: str = "Bug"
     blocked_tags: str = "Blocked,At Risk,Impediment"
     highlight_tag: str = "ADNOC"
 
@@ -82,6 +83,10 @@ class Settings(BaseSettings):
     @property
     def blocked_tag_set(self) -> set[str]:
         return {s.strip().lower() for s in self.blocked_tags.split(",") if s.strip()}
+
+    @property
+    def excluded_type_set(self) -> set[str]:
+        return {s.strip() for s in self.excluded_types.split(",") if s.strip()}
 
     def quarter_range(self) -> tuple[date, date]:
         if self.quarter_start and self.quarter_end:
